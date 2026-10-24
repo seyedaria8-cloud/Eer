@@ -1,2 +1,494 @@
 # Eer
 Ttttuiii
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>نُوا | سایت ساده و مدرن</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+
+  :root{
+    --cyan:#00ffff;
+    --green:#00ff00;
+    --yellow:#ffff00;
+    --blue:#0000fa;
+    --black:#000000;
+    --white:#ffffff;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Vazirmatn', system-ui, sans-serif;
+    background:var(--black);
+    color:var(--white);
+    min-height:100vh;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- حباب‌های تزئینی پس‌زمینه ---------- */
+  .blob{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(140px);
+    opacity:.16;
+    pointer-events:none;
+    z-index:0;
+  }
+  .blob-1{width:360px;height:360px;background:var(--cyan);top:-120px;right:-100px;}
+  .blob-2{width:320px;height:320px;background:var(--green);bottom:-140px;left:-110px;}
+  .blob-3{width:240px;height:240px;background:var(--blue);top:45%;left:40%;}
+
+  .container{
+    width:100%;
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 20px;
+  }
+
+  /* ---------- هدر ---------- */
+  .header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--black);
+    border-bottom:2px solid var(--cyan);
+  }
+
+  .header-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:74px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+
+  .logo{
+    width:36px;
+    height:36px;
+    border-radius:12px;
+    background:var(--cyan);
+    box-shadow:0 0 20px var(--cyan);
+    position:relative;
+  }
+  .logo::after{
+    content:"";
+    position:absolute;
+    inset:11px;
+    border-radius:50%;
+    background:var(--black);
+  }
+
+  .brand-name{
+    font-size:20px;
+    font-weight:800;
+    color:var(--cyan);
+    letter-spacing:.5px;
+  }
+
+  /* ---------- منوی سه نقطه ---------- */
+  .menu-wrap{
+    position:relative;
+  }
+
+  .menu-toggle{
+    display:none;
+  }
+
+  .dots-btn{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    width:48px;
+    height:48px;
+    border-radius:14px;
+    border:2px solid var(--cyan);
+    background:var(--black);
+    cursor:pointer;
+    transition:transform .28s ease, background .25s ease, box-shadow .25s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  .dots-btn span{
+    display:block;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--cyan);
+    transition:background .25s ease;
+  }
+
+  .dots-btn:hover{
+    background:var(--cyan);
+    box-shadow:0 0 22px var(--cyan);
+  }
+  .dots-btn:hover span{background:var(--black);}
+
+  .menu-toggle:checked + .dots-btn{
+    background:var(--cyan);
+    box-shadow:0 0 26px var(--cyan);
+    transform:rotate(90deg);
+  }
+  .menu-toggle:checked + .dots-btn span{background:var(--black);}
+
+  /* ---------- کشویی ---------- */
+  .dropdown{
+    position:absolute;
+    top:calc(100% + 14px);
+    left:0;
+    width:220px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:10px;
+    background:var(--black);
+    border:2px solid var(--cyan);
+    border-radius:18px;
+    box-shadow:0 0 32px var(--cyan);
+    opacity:0;
+    visibility:hidden;
+    transform:translateY(-12px) scale(.95);
+    transform-origin:top left;
+    transition:opacity .22s ease, transform .22s ease, visibility .22s;
+    z-index:60;
+  }
+
+  .menu-toggle:checked ~ .dropdown{
+    opacity:1;
+    visibility:visible;
+    transform:translateY(0) scale(1);
+  }
+
+  .drop-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 14px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:600;
+    color:var(--white);
+    text-decoration:none;
+    transition:background .2s ease, color .2s ease, padding .2s ease;
+  }
+
+  .drop-item::before{
+    content:"";
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--cyan);
+    flex-shrink:0;
+    transition:background .2s ease;
+  }
+
+  .drop-item:nth-child(1)::before{background:var(--cyan);}
+  .drop-item:nth-child(2)::before{background:var(--green);}
+  .drop-item:nth-child(3)::before{background:var(--yellow);}
+
+  .drop-item:nth-child(1):hover{background:var(--cyan);color:var(--black);}
+  .drop-item:nth-child(2):hover{background:var(--green);color:var(--black);}
+  .drop-item:nth-child(3):hover{background:var(--yellow);color:var(--black);}
+
+  .drop-item:hover{padding-right:20px;}
+  .drop-item:hover::before{background:var(--black);}
+
+  /* ---------- محتوا ---------- */
+  main{
+    position:relative;
+    z-index:1;
+  }
+
+  section{scroll-margin-top:100px;}
+
+  .hero{
+    text-align:center;
+    padding:95px 0 75px;
+  }
+
+  .badge{
+    display:inline-block;
+    padding:7px 18px;
+    margin-bottom:26px;
+    border:1px solid var(--cyan);
+    border-radius:999px;
+    color:var(--cyan);
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.3px;
+  }
+
+  .hero h1{
+    font-size:clamp(28px, 6vw, 52px);
+    font-weight:800;
+    line-height:1.55;
+    margin-bottom:20px;
+  }
+
+  .hero h1 .hl{color:var(--cyan);}
+  .hero h1 .hl2{color:var(--green);}
+
+  .hero p{
+    max-width:620px;
+    margin:0 auto 36px;
+    font-size:clamp(14px, 2.2vw, 16px);
+    font-weight:400;
+    line-height:2.1;
+    color:var(--white);
+  }
+
+  .hero-actions{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    display:inline-block;
+    padding:14px 30px;
+    border-radius:14px;
+    font-family:inherit;
+    font-size:15px;
+    font-weight:700;
+    text-decoration:none;
+    border:2px solid var(--cyan);
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease, color .25s ease;
+  }
+
+  .btn-primary{
+    background:var(--cyan);
+    color:var(--black);
+  }
+  .btn-primary:hover{
+    box-shadow:0 0 30px var(--cyan);
+    transform:translateY(-3px);
+  }
+
+  .btn-ghost{
+    background:var(--black);
+    color:var(--cyan);
+  }
+  .btn-ghost:hover{
+    background:var(--cyan);
+    color:var(--black);
+    transform:translateY(-3px);
+  }
+
+  /* ---------- کارت‌ها ---------- */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+    gap:22px;
+    padding-bottom:90px;
+  }
+
+  .card{
+    background:var(--black);
+    border:2px solid var(--cyan);
+    border-radius:22px;
+    padding:30px 26px;
+    transition:transform .28s ease, box-shadow .28s ease;
+  }
+
+  .card:hover{transform:translateY(-7px);}
+
+  .card-icon{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    font-size:18px;
+    font-weight:800;
+    color:var(--black);
+    margin-bottom:18px;
+  }
+
+  .card h3{
+    font-size:18px;
+    font-weight:800;
+    margin-bottom:10px;
+  }
+
+  .card p{
+    font-size:14px;
+    line-height:2;
+    color:var(--white);
+    font-weight:400;
+  }
+
+  .c1{border-color:var(--cyan);}
+  .c1:hover{box-shadow:0 0 28px var(--cyan);}
+  .c1 .card-icon{background:var(--cyan);}
+
+  .c2{border-color:var(--green);}
+  .c2:hover{box-shadow:0 0 28px var(--green);}
+  .c2 .card-icon{background:var(--green);}
+
+  .c3{border-color:var(--yellow);}
+  .c3:hover{box-shadow:0 0 28px var(--yellow);}
+  .c3 .card-icon{background:var(--yellow);}
+
+  /* ---------- فوتر ---------- */
+  .footer{
+    position:relative;
+    z-index:1;
+    border-top:2px solid var(--cyan);
+    background:var(--black);
+  }
+
+  .footer-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+    padding:26px 20px;
+    font-size:13px;
+    font-weight:500;
+  }
+
+  .footer-inner .dot{
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--green);
+    display:inline-block;
+    margin-left:8px;
+  }
+
+  .footer-inner .copy{color:var(--white);}
+  .footer-inner .made{color:var(--cyan);}
+
+  /* ---------- ریسپانسیو ---------- */
+  @media (max-width:600px){
+    .header-inner{height:66px;}
+    .logo{width:32px;height:32px;border-radius:10px;}
+    .logo::after{inset:10px;}
+    .brand-name{font-size:18px;}
+    .dots-btn{width:44px;height:44px;border-radius:12px;}
+
+    .dropdown{width:200px;padding:8px;}
+
+    .hero{padding:64px 0 56px;}
+    .hero-actions{flex-direction:column;width:100%;}
+    .btn{width:100%;text-align:center;}
+
+    .cards{padding-bottom:64px;gap:16px;}
+    .card{padding:24px 20px;}
+
+    .footer-inner{justify-content:center;text-align:center;padding:22px 16px;}
+  }
+</style>
+</head>
+
+<body>
+
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- ===== هدر ===== -->
+  <header class="header">
+    <div class="container header-inner">
+
+      <div class="brand">
+        <div class="logo"></div>
+        <span class="brand-name">نُوا</span>
+      </div>
+
+      <div class="menu-wrap">
+        <input type="checkbox" id="menuToggle" class="menu-toggle" />
+
+        <label for="menuToggle" class="dots-btn" aria-label="باز کردن منو">
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
+
+        <nav class="dropdown">
+          <a href="#home" class="drop-item">خانه</a>
+          <a href="#tags" class="drop-item">تگ ها</a>
+          <a href="#support" class="drop-item">پشتیبانی</a>
+        </nav>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ===== محتوای اصلی ===== -->
+  <main>
+    <div class="container">
+
+      <section class="hero" id="home">
+        <span class="badge">نسخه ۱.۰</span>
+        <h1>
+          سایت <span class="hl">ساده</span> و <span class="hl2">مدرن</span> شما
+        </h1>
+        <p>
+          به نُوا خوش آمدید. برای دسترسی به بخش‌های مختلف، کافی است روی منوی سه‌نقطه
+          در بالای صفحه ضربه بزنید و یکی از گزینه‌های خانه، تگ ها یا پشتیبانی را انتخاب کنید.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#tags" class="btn btn-primary">شروع کنید</a>
+          <a href="#support" class="btn btn-ghost">پشتیبانی</a>
+        </div>
+      </section>
+
+      <section class="cards" id="tags">
+
+        <article class="card c1">
+          <div class="card-icon">۱</div>
+          <h3>خانه</h3>
+          <p>
+            بازگشت به صفحه اصلی و مشاهده تازه‌ترین بخش‌های سایت با یک نگاه ساده و سریع.
+          </p>
+        </article>
+
+        <article class="card c2">
+          <div class="card-icon">۲</div>
+          <h3>تگ ها</h3>
+          <p>
+            دسترسی سریع به موضوعات و برچسب‌ها تا محتوای مورد علاقه خود را آسان‌تر پیدا کنید.
+          </p>
+        </article>
+
+        <article class="card c3" id="support">
+          <div class="card-icon">۳</div>
+          <h3>پشتیبانی</h3>
+          <p>
+            در هر ساعتی از شبانه‌روز کنار شما هستیم؛ سوال‌ها و پیشنهادهای خود را با ما در میان بگذارید.
+          </p>
+        </article>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ===== فوتر ===== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="copy"><span class="dot"></span>نُوا — تمامی حقوق محفوظ است.</span>
+      <span class="made">ساخته‌شده با ❤ در ایران</span>
+    </div>
+  </footer>
+
+</body>
+</html>
